@@ -52,13 +52,16 @@ if ( !empty( $_ENV["MEMCACHIER_SERVERS"] ) ) {
 
 /**#@+
  * MySQL settings.
- *
- * We are getting Heroku ClearDB settings from Heroku Environment Vars
+ * Removed the database assumptions from the original repo
+ * Just provide a database URL and this should build
  */
-if ( isset( $_ENV["CLEARDB_DATABASE_URL"] ) ) {
-	$_dbsettings = parse_url($_ENV["CLEARDB_DATABASE_URL"]);
+if ( isset( $_ENV["DATABASE_URL"] ) ) {
+	$_dbsettings = parse_url($_ENV["DATABASE_URL"]);
 } else {
-	$_dbsettings = parse_url("mysql://herokuwp:password@127.0.0.1/herokuwp");
+  // @TODO These probably don't need to be concatenated
+  // Not sure if $_dbsettings is used anywhere else
+  $db_url = 'mysql://'.$_ENV["DB_USER"].':'.$_ENV['DB_PASS'].'@'.$_ENV['DB_HOST'].'/'.$_ENV['DB_NAME'];
+	$_dbsettings = parse_url($db_url);
 }
 
 define('DB_NAME',     trim($_dbsettings["path"],"/"));
@@ -71,6 +74,7 @@ define('DB_COLLATE', ''                             );
 unset($_dbsettings);
 
 // Set SSL settings
+// @TODO Need to remove these ClearDB assumptions
 if ( isset( $_ENV["CLEARDB_SSL"] ) && 'ON' == $_ENV["CLEARDB_SSL"] ) {
 	define('MYSQL_CLIENT_FLAGS', MYSQLI_CLIENT_COMPRESS | MYSQLI_CLIENT_SSL);
 	define('MYSQL_SSL_KEY',      $_ENV["CLEARDB_SSL_KEY"]                  );
@@ -140,7 +144,10 @@ define('WPLANG', '');
  * It is strongly recommended that plugin and theme developers use WP_DEBUG
  * in their development environments.
  */
-define('WP_DEBUG', false);
+$is_debug = $_SERVER['WP_DEBUG'] == 'true' ? true : false;
+define('WP_DEBUG', $is_debug);
+define('WP_SITEURL', $_SERVER['WP_SITEURL']);
+define('WP_HOME', $_SERVER['WP_HOME']);
 
 /* That's all, stop editing! Happy blogging. */
 
