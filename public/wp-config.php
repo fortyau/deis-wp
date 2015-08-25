@@ -29,24 +29,9 @@ define( 'JETPACK_SIGNATURE__HTTPS_PORT', 80 );
 
 /**#@+
  * Memcache settings.
+ * @TODO get this working with DEIS removing for now
  */
-if ( !empty( $_ENV["MEMCACHIER_SERVERS"] ) ) {
-	$_mcsettings = parse_url($_ENV["MEMCACHIER_SERVERS"]);
-
-	define('WP_CACHE', true);
-	$sasl_memcached_config = array(
-		'default' => array(
-			array(
-				'host' => $_mcsettings["host"],
-				'port' => $_mcsettings["port"],
-				'user' => $_ENV["MEMCACHIER_USERNAME"],
-				'pass' => $_ENV["MEMCACHIER_PASSWORD"],
-			),
-		),
-	);
-
-	unset($_mcsettings);
-}
+define('WP_CACHE', false);
 
 /**#@-*/
 
