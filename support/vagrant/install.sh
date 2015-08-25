@@ -31,11 +31,6 @@ echo "CREATE DATABASE herokuwp" | mysql -uroot "-p$MYSQL_PASSWORD"
 echo "GRANT ALL ON herokuwp.* TO '$MYSQL_USERNAME'@'127.0.0.1'" | mysql -uroot "-p$MYSQL_PASSWORD"
 echo "FLUSH PRIVILEGES" | mysql -uroot "-p$MYSQL_PASSWORD"
 
-#
-# Install Memcached
-#
-
-apt-get install -y memcached
 
 #
 # Install Nginx
@@ -81,6 +76,18 @@ cp -a /app/support/vagrant/root/* /
 
 sudo -u vagrant composer --working-dir=/app install
 
+
+#
+# Set some environment variables for dev
+#
+echo "fastcgi_param   WP_SITEURL         http://herokuwp.local;" >> /etc/nginx/fastcgi_params
+echo "fastcgi_param   WP_HOME         http://herokuwp.local;" >> /etc/nginx/fastcgi_params
+echo "fastcgi_param   DB_HOST         127.0.0.1;" >> /etc/nginx/fastcgi_params
+echo "fastcgi_param   DB_USER         $MYSQL_USERNAME;" >> /etc/nginx/fastcgi_params
+echo "fastcgi_param   DB_PASS         $MYSQL_PASSWORD;" >> /etc/nginx/fastcgi_params
+echo "fastcgi_param   DB_NAME         herokuwp;" >> /etc/nginx/fastcgi_params
+
+
 #
 # Restart Services
 #
@@ -91,8 +98,6 @@ sudo -u vagrant composer --working-dir=/app install
 /etc/init.d/nginx stop
 /etc/init.d/nginx start
 
-/etc/init.d/memcached stop
-/etc/init.d/memcached start
 
 #
 # Stop Unused Services

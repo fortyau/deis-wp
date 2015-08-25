@@ -49,13 +49,6 @@ Add a database to your app
     > Adding cleardb:ignite on strange-turtle-1234... done, v2 (free)
     > Use `heroku addons:docs cleardb:ignite` to view documentation.
 
-Add memcache to your app
-
-    $ heroku addons:add memcachier:dev
-    > Adding memcachier:dev on strange-turtle-1234... done, v3 (free)
-    > MemCachier: added.  Your credentials may take up to 3 minutes to sync to our servers.
-    > Use `heroku addons:docs memcachier:dev` to view documentation.
-
 Add unique keys and salts to your Heroku config
 
     $ heroku config:set\
