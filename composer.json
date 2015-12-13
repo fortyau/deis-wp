@@ -2,6 +2,7 @@
     "name": "xyu/heroku-wp",
     "description": "A template for installing and running WordPress on Heroku",
     "license": "MIT",
+    "minimum-stability": "dev",
     "require": {
         "hhvm": "~3.2",
         "WordPress/WordPress": "*",
