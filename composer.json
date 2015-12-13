@@ -8,7 +8,12 @@
         "wpackagist-plugin/jetpack": "~3",
         "wpackagist-plugin/wpro": "~1",
         "wpackagist-plugin/sendgrid-email-delivery-simplified": "~1",
-        "wpackagist-plugin/authy-two-factor-authentication": "~2"
+        "wpackagist-plugin/authy-two-factor-authentication": "~2",
+        "wpackagist-plugin/advanced-custom-fields": "4.4.2",
+        "wpackagist-plugin/custom-post-type-ui": "1.0.8",
+        "wpackagist-plugin/wp-google-analytics": "1.4.1",
+        "wpackagist-plugin/wordpress-seo":"*",
+        "wpackagist-plugin/wp-mail-smtp":"*"
     },
     "repositories": [
         {
