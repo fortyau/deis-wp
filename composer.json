@@ -11,11 +11,13 @@
         "wpackagist-plugin/authy-two-factor-authentication": "~2",
         "wpackagist-plugin/regenerate-thumbnails": "*",
         "wpackagist-plugin/amazon-s3-and-cloudfront": "*",
-        "wpackagist-plugin/advanced-custom-fields": "4.4.2",
-        "wpackagist-plugin/custom-post-type-ui": "1.0.8",
-        "wpackagist-plugin/wp-google-analytics": "1.4.1",
+        "wpackagist-plugin/advanced-custom-fields": "*",
+        "wpackagist-plugin/custom-post-type-ui": "*",
+        "wpackagist-plugin/wp-google-analytics": "*",
         "wpackagist-plugin/wordpress-seo":"*",
-        "wpackagist-plugin/wp-mail-smtp":"*"
+        "wpackagist-plugin/wp-mail-smtp":"*",
+        "wp-sync-db/wp-sync-db":"*",
+        "wp-sync-db/wp-sync-db-media-files":"*"
     },
     "repositories": [
         {
@@ -37,7 +39,7 @@
     "extra": {
         "installer-paths": {
             "vendor/WordPress/WordPress/wp-content/mu-plugins/{$name}/": [ "type:wordpress-muplugin" ],
-            "vendor/WordPress/WordPress/wp-content/plugins/{$name}/": [ "type:wordpress-plugin" ],
+            "vendor/WordPress/WordPress/wp-content/plugins/{$name}/": [ "type:wordpress-plugin", "wp-sync-db" ],
             "vendor/WordPress/WordPress/wp-content/themes/{$name}/": [ "type:wordpress-theme" ]
         }
     },
