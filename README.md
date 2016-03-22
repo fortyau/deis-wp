@@ -1,7 +1,7 @@
-Deis WP
+Ecos WP
 =========
 
-This is a template for installing and running [WordPress](http://wordpress.org/) on [Deis](http://www.deis.com/) with a focus on speed and security while using the official Deis stack.
+This is a template for installing and running [WordPress](http://wordpress.org/) on [Heroku](http://www.heroku.com/) with a focus on speed and security while using the official Heroku stack.
 
 The repository is built on top of the following technologies.
 * [nginx](http://nginx.org) - For serving web content.
@@ -32,26 +32,26 @@ Installation
 
 Clone the repository from Github
 
-    $ git clone git://github.com/xyu/deis-wp.git
+    $ git clone git@bitbucket.org:fortyau/ecos-wp.git
 
-With the [Deis gem](http://devcenter.deis.com/articles/deis-command), create your app
+With the [heroku gem](http://devcenter.deis.com/articles/heroku-command), create your app
 
-    $ cd deis-wp
-    $ deis create
+    $ cd ecos-wp
+    $ heroku create
     > Creating strange-turtle-1234... done, stack is cedar
-    > http://strange-turtle-1234.deisapp.com/ | git@deis.com:strange-turtle-1234.git
-    > Git remote deis added
+    > http://strange-turtle-1234.herokuapp.com/ | git@deis.com:strange-turtle-1234.git
+    > Git remote heroku added
 
 
 Add a database to your app
 
-    $ deis addons:add cleardb:ignite
+    $ heroku addons:add cleardb:ignite
     > Adding cleardb:ignite on strange-turtle-1234... done, v2 (free)
-    > Use `deis addons:docs cleardb:ignite` to view documentation.
+    > Use `heroku addons:docs cleardb:ignite` to view documentation.
 
-Add unique keys and salts to your Deis config
+Add unique keys and salts to your Heroku config
 
-    $ deis config:set\
+    $ heroku config:set\
         WP_AUTH_KEY=`dd if=/dev/random bs=1 count=96 2>/dev/null | base64`\
         WP_SECURE_AUTH_KEY=`dd if=/dev/random bs=1 count=96 2>/dev/null | base64`\
         WP_LOGGED_IN_KEY=`dd if=/dev/random bs=1 count=96 2>/dev/null | base64`\
@@ -74,9 +74,9 @@ Create a new production branch for your app
 
     $ git checkout -b production
 
-Deploy to Deis
+Deploy to Heroku
 
-    $ git push deis production:master
+    $ git push heroku production:master
     > Fetching repository, done.
     > Counting objects: 5, done.
     > Delta compression using up to 8 threads.
@@ -122,9 +122,9 @@ Deploy to Deis
     >
     > -----> Compressing... done, 61.1MB
     > -----> Launching... done, v70
-    >        http://strange-turtle-1234.deisapp.com/ deployed to Deis
+    >        http://strange-turtle-1234.herokuapp.com/ deployed to Deis
     >
-    > To git@deis:strange-turtle-1234.git
+    > To git@heroku:strange-turtle-1234.git
     > * [new branch]    production -> master
 
 After deployment WordPress has a few more steps to setup and thats it!
@@ -138,13 +138,13 @@ Installing and configuring the items below are not essential to get a working Wo
 
 Deis provides an SSL'ed endpoint to each app for free via the APP_NAME.deisapp.com domain. To use this domain for all logged in sessions and to protect your login credentials simply set the SSL domain in the config vars. (Replace APP_NAME with the name of your Deis app.)
 
-    $ deis config:set SSL_DOMAIN="APP_NAME.deisapp.com"
+    $ heroku config:set SSL_DOMAIN="APP_NAME.deisapp.com"
 
 ### Securing Your MySQL Connection
 
 By default WordPress will connect to the database unencrypted which is a potential problem for a cloud based installs where the database and application servers may transfer data over unsecured connections. ClearDB provides SSL keys and certs for the database that's setup and it's highly advisable to use them to secure your database connection.
 
-1. Go to your [Deis Dashboard](https://dashboard.deis.com/) and click on your deis-wp app.
+1. Go to your [Heroku Dashboard](https://dashboard.heroku.com/) and click on your ecos-wp app.
 2. Click on the "ClearDB MySQL Database" add-on.
 3. Scroll to the bottom of the page and download the "ClearDB CA Certificate", "Client Certificate", and "Client Private Key" in the "PEM Format".
 4. Generate Deis compatible RSA keys from the key file downloaded:
@@ -156,7 +156,7 @@ By default WordPress will connect to the database unencrypted which is a potenti
 5. Add the keys to the config vars of your app:
 
     ```
-    $ deis config:set \
+    $ heroku config:set \
         CLEARDB_SSL_CA="$(cat /path/to/cleardb-ca.pem)" \
         CLEARDB_SSL_CERT="$(cat /path/to/cleardb_id-cert.pem)" \
         CLEARDB_SSL_KEY="$(cat /path/to/cleardb_id-key.rsa.pem)"
@@ -179,22 +179,17 @@ By default WordPress will connect to the database unencrypted which is a potenti
 
 Add SendGrid to your app
 
-    $ deis addons:add sendgrid:starter
+    $ heroku addons:add sendgrid:starter
     > Adding sendgrid:starter on strange-turtle-1234... done, v11 (free)
-    > Use `deis addons:docs sendgrid:starter` to view documentation.
+    > Use `heroku addons:docs sendgrid:starter` to view documentation.
 
 Activate the plugin
 
 Usage
 -----
 
-Because a file cannot be written to Deis's file system, updating and installing plugins or themes should be done locally and then pushed to Deis. Even better would be to use Composer to install plugins so that version control and upgrading is simply a matter of editing the `composer.json` file and bumping the version number.
+Because a file cannot be written to Heroku's file system, updating and installing plugins or themes should be done locally and then pushed to Heroku. Even better would be to use Composer to install plugins so that version control and upgrading is simply a matter of editing the `composer.json` file and bumping the version number.
 
-Internationalization
---------------------
-
-In most cases you may want to have your WordPress blog in a language different than its default (US English). In that case all you need to do is download the .mo and .po files for your language from [wpcentral.io/internationalization](http://wpcentral.io/internationalization/) and place them in the
-`languages` directory you'll create under `public/wp-content`. Then you should commit changes to your local branch and push them to your deis remote. After that, you'll be able to select the new language from the WP admin panel.
 
 Updating
 --------
@@ -208,11 +203,11 @@ Using the same branch name from our installation:
 
     $ git checkout production
     $ git merge master # Merge latest
-    $ git push deis production:master
+    $ git push heroku production:master
 
 WordPress needs to update the database. After push, navigate to:
 
-    http://your-app-url.deisapp.com/wp-admin
+    http://your-app-url.herokuapp.com/wp-admin
 
 WordPress will prompt for updating the database. After that you'll be good
 to go.
@@ -222,19 +217,19 @@ Custom Domains
 
 Deis allows you to add custom domains to your site hosted with them.  To add your custom domain, enter in the follow commands.
 
-    $ deis domains:add www.example.com
-    > Added www.example.com as a custom domain name to myapp.deis.com
+    $ heroku domains:add www.example.com
+    > Added www.example.com as a custom domain name to myapp.herokuapp.com
 
 Running Locally
 ---------------
 
-A Vagrant instance to run Deis WP is included. To get up and running:
+A Vagrant instance to run Ecos WP is included. To get up and running:
 * Install vagrant http://www.vagrantup.com/downloads
-* Install vitrual box https://www.virtualbox.org/wiki/Downloads 
-* Install virtual box extension pack https://www.virtualbox.org/wiki/Downloads 
+* Install vitrual box https://www.virtualbox.org/wiki/Downloads
+* Install virtual box extension pack https://www.virtualbox.org/wiki/Downloads
 * `cd` into app root directory and run `$ vagrant up` (should start setting up virtual env. go grab some ☕, takes about 10 minutes)
 
-Once Vagrant provisions the VM you will have Deis WP running locally at `http://deiswp.local/`. On first load, it should bring you to the wordpress install page. If the site is not accessible in the browser, you might need to add `192.168.50.100  deiswp.local` to your hosts file.
+Once Vagrant provisions the VM you will have Deis WP running locally at `http://ecoswp.local/`. On first load, it should bring you to the wordpress install page. If the site is not accessible in the browser, you might need to add `192.168.50.100  ecoswp.local` to your hosts file.
 
 As a convenience both the `/public` dir and `/composer.lock` file will be monitored by the VM. Any changes to either triggers a rebuild process which will result in `/public.built` (the web root) being updated.
 
@@ -258,5 +253,5 @@ Then you can connect using SSH with the following paramaters:
 If your computer goes to sleep and vagrant is suspended abruptly
 ----------------
 
-Sometimes after `vagrant up` from a aborted state, the vm does not start correctly and the site is not accessible. 
+Sometimes after `vagrant up` from a aborted state, the vm does not start correctly and the site is not accessible.
 * Provision the machine `vagrant provision` to force it to start back up again
